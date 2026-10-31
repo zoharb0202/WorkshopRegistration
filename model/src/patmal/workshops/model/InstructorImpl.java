@@ -1,0 +1,36 @@
+package patmal.workshops.model;
+
+import patmal.workshops.api.model.Instructor;
+import patmal.workshops.api.model.Workshop;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class InstructorImpl extends PersonImpl implements Instructor
+{
+    private final List<Workshop> workshops = new ArrayList<Workshop>();
+
+    public InstructorImpl(String id, String name, String email)
+    {
+        super(id, name, email);
+    }
+
+    @Override
+    public List<Workshop> getWorkshops()
+    {
+        return new ArrayList<Workshop>(workshops);
+    }
+
+    public void addWorkshop(Workshop workshop)
+    {
+        if (!workshops.contains(workshop))
+        {
+            workshops.add(workshop);
+        }
+    }
+
+    public void removeWorkshop(Workshop workshop)
+    {
+        workshops.remove(workshop);
+    }
+}

@@ -21,3 +21,24 @@ that pom, and every build that depends on the jar fails with
 With the flag Maven writes a new minimal pom with only the coordinates above.
 
 After installing, the jars are found under `<user home>/.m2/repository/patmal/workshops/`.
+
+## Project structure
+
+```
+root                  pom: aggregator of core and app, top parent
+|-- core              pom: aggregator of model-impl and logic-impl, their parent (its parent is root)
+|   |-- model-impl    jar: implementation of the model interfaces
+|   `-- logic-impl    jar: implementation of WorkshopSystem (depends on model-impl)
+`-- app               jar: the runnable application (depends on logic-impl)
+```
+
+All the versions (Java, the API jars, the tester, our own modules) are declared once in the root `pom.xml`:
+as properties, and in `dependencyManagement`. The child poms list their dependencies without a version.
+
+## Build
+
+From the root folder:
+
+```
+mvn clean install
+```

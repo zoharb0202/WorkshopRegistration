@@ -1,5 +1,7 @@
 package patmal.workshops.student.impl.logic.manager;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import patmal.workshops.api.model.Student;
 import patmal.workshops.api.model.Team;
 import patmal.workshops.student.impl.model.StudentImpl;
@@ -13,6 +15,8 @@ import java.util.Map;
 
 public class TeamManager
 {
+    private static final Logger logger = LogManager.getLogger(TeamManager.class);
+
     private final Map<Integer, TeamImpl> teams = new LinkedHashMap<Integer, TeamImpl>();
     private final StudentManager studentManager;
     private int nextTeamId = 1;
@@ -26,7 +30,7 @@ public class TeamManager
     {
         if (members == null || members.isEmpty())
         {
-            throw new IllegalArgumentException("A team must have at least one student");
+            throw reject("A team must have at least one student");
         }
 
         List<Student> teamStudents = new ArrayList<Student>();
@@ -35,15 +39,15 @@ public class TeamManager
             StudentImpl student = studentManager.getStudent(studentId);
             if (student == null)
             {
-                throw new IllegalArgumentException("There is no student with the id '" + studentId + "'");
+                throw reject("There is no student with the id '" + studentId + "'");
             }
             if (teamStudents.contains(student))
             {
-                throw new IllegalArgumentException("The student '" + studentId + "' appears more than once in the team");
+                throw reject("The student '" + studentId + "' appears more than once in the team");
             }
             if (!student.isFree())
             {
-                throw new IllegalArgumentException("The student '" + studentId + "' is already in the team " + student.getTeamName());
+                throw reject("The student '" + studentId + "' is already in the team " + student.getTeamName());
             }
             teamStudents.add(student);
         }
@@ -55,6 +59,7 @@ public class TeamManager
         }
         teams.put(team.getId(), team);
         nextTeamId++;
+        logger.info("Team created: {} in workshop {} with students {}", team, workshop, teamStudents);
         return team;
     }
 
@@ -79,5 +84,11 @@ public class TeamManager
             }
         }
         return result;
+    }
+
+    private IllegalArgumentException reject(String message)
+    {
+        logger.warn("Rejected: {}", message);
+        return new IllegalArgumentException(message);
     }
 }

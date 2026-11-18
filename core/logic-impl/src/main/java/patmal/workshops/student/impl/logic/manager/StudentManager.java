@@ -1,5 +1,7 @@
 package patmal.workshops.student.impl.logic.manager;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import patmal.workshops.api.model.Student;
 import patmal.workshops.student.impl.model.StudentImpl;
 
@@ -10,6 +12,8 @@ import java.util.Map;
 
 public class StudentManager
 {
+    private static final Logger logger = LogManager.getLogger(StudentManager.class);
+
     private final Map<String, StudentImpl> students = new LinkedHashMap<String, StudentImpl>();
 
     public StudentImpl createStudent(String id, String name, String email)
@@ -17,11 +21,12 @@ public class StudentManager
         InputValidator.checkId(id, "student");
         if (students.containsKey(id))
         {
-            throw new IllegalArgumentException("A student with the id '" + id + "' already exists");
+            throw reject("A student with the id '" + id + "' already exists");
         }
 
         StudentImpl student = new StudentImpl(id, name, email);
         students.put(id, student);
+        logger.info("Student created: {}", student);
         return student;
     }
 
@@ -46,5 +51,11 @@ public class StudentManager
             }
         }
         return freeStudents;
+    }
+
+    private IllegalArgumentException reject(String message)
+    {
+        logger.warn("Rejected: {}", message);
+        return new IllegalArgumentException(message);
     }
 }

@@ -22,6 +22,8 @@
 
         <workshops.api.version>2.0</workshops.api.version>
         <workshop.tester.version>2.0</workshop.tester.version>
+
+        <log4j.version>2.26.1</log4j.version>
     </properties>
 
     <dependencyManagement>
@@ -55,6 +57,14 @@
                 <groupId>patmal.workshops</groupId>
                 <artifactId>workshop-tester</artifactId>
                 <version>${workshop.tester.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>${log4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
         </dependencies>

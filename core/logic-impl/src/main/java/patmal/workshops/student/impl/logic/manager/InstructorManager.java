@@ -1,5 +1,7 @@
 package patmal.workshops.student.impl.logic.manager;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import patmal.workshops.api.model.Instructor;
 import patmal.workshops.student.impl.model.InstructorImpl;
 
@@ -10,6 +12,8 @@ import java.util.Map;
 
 public class InstructorManager
 {
+    private static final Logger logger = LogManager.getLogger(InstructorManager.class);
+
     private final Map<String, InstructorImpl> instructors = new LinkedHashMap<String, InstructorImpl>();
 
     public InstructorImpl createInstructor(String id, String name, String email)
@@ -17,11 +21,12 @@ public class InstructorManager
         InputValidator.checkId(id, "instructor");
         if (instructors.containsKey(id))
         {
-            throw new IllegalArgumentException("An instructor with the id '" + id + "' already exists");
+            throw reject("An instructor with the id '" + id + "' already exists");
         }
 
         InstructorImpl instructor = new InstructorImpl(id, name, email);
         instructors.put(id, instructor);
+        logger.info("Instructor created: {}", instructor);
         return instructor;
     }
 
@@ -34,7 +39,7 @@ public class InstructorManager
     {
         if (instructor == null || !instructors.containsKey(instructor.getId()))
         {
-            throw new IllegalArgumentException("The instructor is not registered in the system");
+            throw reject("The instructor is not registered in the system");
         }
         return instructors.get(instructor.getId());
     }
@@ -42,5 +47,11 @@ public class InstructorManager
     public List<Instructor> getInstructors()
     {
         return new ArrayList<Instructor>(instructors.values());
+    }
+
+    private IllegalArgumentException reject(String message)
+    {
+        logger.warn("Rejected: {}", message);
+        return new IllegalArgumentException(message);
     }
 }

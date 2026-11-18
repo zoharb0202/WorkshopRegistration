@@ -1,5 +1,7 @@
 package patmal.workshops.student.impl.logic.manager;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import patmal.workshops.api.model.Workshop;
 import patmal.workshops.student.impl.model.InstructorImpl;
 import patmal.workshops.student.impl.model.WorkshopImpl;
@@ -11,6 +13,8 @@ import java.util.Map;
 
 public class WorkshopManager
 {
+    private static final Logger logger = LogManager.getLogger(WorkshopManager.class);
+
     private final Map<Integer, WorkshopImpl> workshops = new LinkedHashMap<Integer, WorkshopImpl>();
     private int nextWorkshopId = 1;
 
@@ -19,6 +23,7 @@ public class WorkshopManager
         WorkshopImpl workshop = new WorkshopImpl(nextWorkshopId, name, description);
         workshops.put(workshop.getId(), workshop);
         nextWorkshopId++;
+        logger.info("Workshop created: {}", workshop);
         return workshop;
     }
 
@@ -31,7 +36,7 @@ public class WorkshopManager
     {
         if (workshop == null || !workshops.containsKey(workshop.getId()))
         {
-            throw new IllegalArgumentException(errorMessage);
+            throw reject(errorMessage);
         }
         return workshops.get(workshop.getId());
     }
@@ -51,5 +56,12 @@ public class WorkshopManager
 
         workshop.setInstructor(newInstructor);
         newInstructor.addWorkshop(workshop);
+        logger.info("Workshop {} is taught by {}", workshop, newInstructor);
+    }
+
+    private IllegalArgumentException reject(String message)
+    {
+        logger.warn("Rejected: {}", message);
+        return new IllegalArgumentException(message);
     }
 }

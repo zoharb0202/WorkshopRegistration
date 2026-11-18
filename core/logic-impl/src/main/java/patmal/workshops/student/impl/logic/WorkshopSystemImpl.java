@@ -1,15 +1,16 @@
-package patmal.workshops.logic;
+package patmal.workshops.student.impl.logic;
 
 import patmal.workshops.api.logic.WorkshopSystem;
 import patmal.workshops.api.model.Instructor;
 import patmal.workshops.api.model.Student;
 import patmal.workshops.api.model.Team;
 import patmal.workshops.api.model.Workshop;
-import patmal.workshops.model.InstructorImpl;
-import patmal.workshops.model.StudentImpl;
-import patmal.workshops.model.TeamImpl;
-import patmal.workshops.model.WorkshopImpl;
+import patmal.workshops.student.impl.model.InstructorImpl;
+import patmal.workshops.student.impl.model.StudentImpl;
+import patmal.workshops.student.impl.model.TeamImpl;
+import patmal.workshops.student.impl.model.WorkshopImpl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -236,6 +237,24 @@ public class WorkshopSystemImpl implements WorkshopSystem
             }
         }
         return result;
+    }
+
+    @Override
+    public void exportInstructorsDataToJson(File targetFileName)
+    {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void exportStudentsDataToJson(File targetFileName)
+    {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void exportTeamsDataToJson(File targetFileName)
+    {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     private void checkId(String id, String kind)

@@ -5,6 +5,7 @@ import patmal.workshops.api.model.Instructor;
 import patmal.workshops.api.model.Student;
 import patmal.workshops.api.model.Team;
 import patmal.workshops.api.model.Workshop;
+import patmal.workshops.student.impl.logic.json.JsonExporter;
 import patmal.workshops.student.impl.logic.manager.InstructorManager;
 import patmal.workshops.student.impl.logic.manager.StudentManager;
 import patmal.workshops.student.impl.logic.manager.TeamManager;
@@ -22,6 +23,7 @@ public class WorkshopSystemImpl implements WorkshopSystem
     private final StudentManager studentManager = new StudentManager();
     private final WorkshopManager workshopManager = new WorkshopManager();
     private final TeamManager teamManager = new TeamManager(studentManager);
+    private final JsonExporter jsonExporter = new JsonExporter();
 
     public WorkshopSystemImpl()
     {
@@ -152,18 +154,18 @@ public class WorkshopSystemImpl implements WorkshopSystem
     @Override
     public void exportInstructorsDataToJson(File targetFileName)
     {
-        throw new UnsupportedOperationException("Not implemented yet");
+        jsonExporter.exportInstructors(instructorManager.getInstructors(), teamManager.getTeams(), targetFileName);
     }
 
     @Override
     public void exportStudentsDataToJson(File targetFileName)
     {
-        throw new UnsupportedOperationException("Not implemented yet");
+        jsonExporter.exportStudents(studentManager.getStudents(), targetFileName);
     }
 
     @Override
     public void exportTeamsDataToJson(File targetFileName)
     {
-        throw new UnsupportedOperationException("Not implemented yet");
+        jsonExporter.exportTeams(teamManager.getTeams(), targetFileName);
     }
 }

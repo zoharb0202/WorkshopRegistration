@@ -19,6 +19,7 @@ public class InstructorManager
     public InstructorImpl createInstructor(String id, String name, String email)
     {
         InputValidator.checkId(id, "instructor");
+        InputValidator.checkEmail(email, "instructor");
         if (instructors.containsKey(id))
         {
             throw reject("An instructor with the id '" + id + "' already exists");

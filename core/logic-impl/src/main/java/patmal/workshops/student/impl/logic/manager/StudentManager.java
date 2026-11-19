@@ -19,6 +19,7 @@ public class StudentManager
     public StudentImpl createStudent(String id, String name, String email)
     {
         InputValidator.checkId(id, "student");
+        InputValidator.checkEmail(email, "student");
         if (students.containsKey(id))
         {
             throw reject("A student with the id '" + id + "' already exists");

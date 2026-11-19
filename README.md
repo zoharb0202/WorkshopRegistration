@@ -35,6 +35,17 @@ root                  pom: aggregator of core and app, top parent
 All the versions (Java, the API jars, the tester, our own modules) are declared once in the root `pom.xml`:
 as properties, and in `dependencyManagement`. The child poms list their dependencies without a version.
 
+## Libraries
+
+| Library | Version | Module | Scope | Used for |
+|---|---|---|---|---|
+| Log4j 2 (`log4j-api`) | 2.26.1 | logic-impl | compile | logging in the code |
+| Log4j 2 (`log4j-core`) | 2.26.1 | app | runtime | the logging implementation; configured by `app/src/main/resources/log4j2.xml` |
+| commons-validator | 1.11.0 | logic-impl | compile | e-mail validation |
+| Gson | 2.15.0 | logic-impl | compile | JSON export |
+
+Log4j is imported into `dependencyManagement` as a BOM (`log4j-bom`), so one property controls the versions of all its artifacts.
+
 ## Build
 
 From the root folder:
@@ -42,3 +53,22 @@ From the root folder:
 ```
 mvn clean install
 ```
+
+The build creates the uber jar `app/target/workshop-cli.jar` (maven-assembly-plugin, `jar-with-dependencies`):
+the application, our modules, the API classes and all the runtime dependencies in one jar.
+
+## Running the application
+
+```
+java -jar app/target/workshop-cli.jar
+```
+
+It creates demo data and writes `instructors.json`, `students.json` and `teams.json` into the current folder.
+
+## Running the tester
+
+```
+java -cp "lib/workshop-tester-2.0.jar;app/target/workshop-cli.jar" patmal.workshops.main.Main
+```
+
+(On Linux / macOS use `:` instead of `;`.)

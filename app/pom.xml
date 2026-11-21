@@ -25,6 +25,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>patmal.workshops</groupId>
+            <artifactId>workshop-tester</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -55,6 +61,30 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>run-tester</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>java</executable>
+                            <classpathScope>test</classpathScope>
+                            <arguments>
+                                <argument>-Dworkshop.log.level=error</argument>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>patmal.workshops.main.Main</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

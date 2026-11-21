@@ -8,7 +8,7 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="patmal.workshops.student.impl" level="info"/>
+        <Logger name="patmal.workshops.student.impl" level="${sys:workshop.log.level:-info}"/>
         <Root level="warn">
             <AppenderRef ref="Console"/>
         </Root>

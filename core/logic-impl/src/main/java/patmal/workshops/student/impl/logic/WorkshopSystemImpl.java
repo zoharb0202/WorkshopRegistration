@@ -5,6 +5,7 @@ import patmal.workshops.api.model.Instructor;
 import patmal.workshops.api.model.Student;
 import patmal.workshops.api.model.Team;
 import patmal.workshops.api.model.Workshop;
+import patmal.workshops.student.impl.logic.csv.CsvStudentImporter;
 import patmal.workshops.student.impl.logic.json.JsonExporter;
 import patmal.workshops.student.impl.logic.manager.InstructorManager;
 import patmal.workshops.student.impl.logic.manager.StudentManager;
@@ -24,6 +25,7 @@ public class WorkshopSystemImpl implements WorkshopSystem
     private final WorkshopManager workshopManager = new WorkshopManager();
     private final TeamManager teamManager = new TeamManager(studentManager);
     private final JsonExporter jsonExporter = new JsonExporter();
+    private final CsvStudentImporter csvStudentImporter = new CsvStudentImporter(studentManager);
 
     public WorkshopSystemImpl()
     {
@@ -167,5 +169,11 @@ public class WorkshopSystemImpl implements WorkshopSystem
     public void exportTeamsDataToJson(File targetFileName)
     {
         jsonExporter.exportTeams(teamManager.getTeams(), targetFileName);
+    }
+
+    @Override
+    public List<Student> importStudentDataFromFile(File source)
+    {
+        return csvStudentImporter.importStudents(source);
     }
 }
